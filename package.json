@@ -1,5 +1,5 @@
 {
-  "name": "@mcp-server/codesandbox",
+  "name": "codesandbox-mcp",
   "version": "0.1.0",
   "private": false,
   "scripts": {
@@ -29,5 +29,6 @@
     "@codesandbox/sdk": "^2.2.0",
     "@modelcontextprotocol/sdk": "^1.17.5",
     "zod": "^3.25.7"
-  }
+  },
+  "packageManager": "pnpm@10.15.0"
 }
