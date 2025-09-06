@@ -9,6 +9,9 @@ import { registerResumeSession } from "./tools/resumeSession.js";
 import { registerReadFile } from "./tools/readFile.js";
 import { registerWriteFile } from "./tools/writeFile.js";
 import { registerRename } from "./tools/rename.js";
+import { registerGetSandboxInfo } from "./tools/getSandboxInfo.js";
+import { registerUpdateSandbox } from "./tools/updateSandbox.js";
+import { registerReaddir } from "./tools/readdir.js";
 
 export const startServer = async (cfg: AppConfig) => {
   const mcp = new McpServer(
@@ -20,9 +23,12 @@ export const startServer = async (cfg: AppConfig) => {
   registerCreateSandbox(mcp, cfg);
   registerResumeSandbox(mcp, cfg);
   registerHibernateSandbox(mcp, cfg);
+  registerGetSandboxInfo(mcp, cfg);
+  registerUpdateSandbox(mcp, cfg);
   registerCreateSession(mcp, cfg);
   registerResumeSession(mcp, cfg);
   registerReadFile(mcp, cfg);
+  registerReaddir(mcp, cfg);
   registerWriteFile(mcp, cfg);
   registerRename(mcp, cfg);
 

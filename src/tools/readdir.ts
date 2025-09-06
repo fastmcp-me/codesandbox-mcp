@@ -1,7 +1,7 @@
 import type { AppConfig } from "../config.js";
+import { createSdk } from "../sdk/client.js";
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { createSdk } from "../sdk/client.js";
 
 const InputSchema = z.object({
   sandboxId: z.string().describe("Target sandbox ID to operate on."),
@@ -11,7 +11,7 @@ const InputSchema = z.object({
       "Session identifier to connect with. If missing in the sandbox, it will be created."
     ),
   permission: z
-    .enum(["read", "write"]) 
+    .enum(["read", "write"])
     .optional()
     .describe(
       "Optional permission if session needs to be created. Defaults to 'read' when server is read-only."
@@ -19,43 +19,40 @@ const InputSchema = z.object({
   env: z
     .record(z.string())
     .optional()
-    .describe(
-      "Optional environment variables if the session is created."
-    ),
-  path: z.string().describe("Absolute path inside the sandbox filesystem."),
-  encoding: z
-    .enum(["utf8", "base64"]) 
-    .optional()
-    .describe("How to encode the returned content. Defaults to 'utf8'."),
+    .describe("Optional environment variables if the session is created."),
+  path: z
+    .string()
+    .describe("Absolute path to list within the sandbox filesystem."),
 });
 
-export const registerReadFile = (server: McpServer, cfg: AppConfig) => {
+export const registerReaddir = (server: McpServer, cfg: AppConfig) => {
   server.registerTool(
-    "readFile",
+    "readdir",
     {
       description:
-        "Read a file from the sandbox filesystem. Stateless: connects per call using sandboxId+sessionId.",
+        "List files and directories at a given path in the sandbox filesystem. Stateless: connects per call using sandboxId+sessionId.",
       inputSchema: InputSchema.shape,
       annotations: { readOnlyHint: true },
     },
     async (input) => {
       const sdk = createSdk(cfg);
-      const sandbox = await sdk.sandboxes.resume(input.sandboxId);
+      const sandbox = await sdk.sandboxes.create({
+        id: input.sandboxId,
+      });
       const client = await sandbox.connect({
         id: input.sessionId,
         permission: input.permission ?? (cfg.readOnly ? "read" : "write"),
         env: (input.env as Record<string, string> | undefined) ?? undefined,
       });
-      const data = await client.fs.readFile(input.path);
-      const encoding = input.encoding ?? "utf8";
-      const content =
-        encoding === "base64"
-          ? Buffer.from(data).toString("base64")
-          : Buffer.from(data).toString("utf8");
+      const entries = await client.fs.readdir(input.path);
       try {
         client.dispose();
       } catch {}
-      return { content: [{ type: "text", text: content }] };
+      return {
+        content: [
+          { type: "text", text: JSON.stringify({ path: input.path, entries }) },
+        ],
+      };
     }
   );
 };
