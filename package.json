@@ -7,8 +7,11 @@
     "start": "node dist/cli.js",
     "check": "tsc -p tsconfig.json --noEmit"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "mcp",
+    "codesandbox"
+  ],
+  "author": "Bruno Amorim",
   "license": "MIT",
   "description": "MCP server for CodeSandbox SDK",
   "type": "module",
