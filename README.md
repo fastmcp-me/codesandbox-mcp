@@ -5,7 +5,6 @@ A Model Context Protocol (MCP) server that exposes CodeSandbox SDK operations as
 - Runtime: Node.js 18+
 - Auth: `CODESANDBOX_API_TOKEN` (or `CSB_API_KEY`)
 - SDK: Official `@codesandbox/sdk`
-- Paradigm: Functional (no classes in this codebase)
 
 ## Install / Run
 
