@@ -8,9 +8,9 @@ A Model Context Protocol (MCP) server that exposes CodeSandbox SDK operations as
 
 ## Install / Run
 
-Use via `npx` in your MCP client config, similar to Supabase examples.
+Use via `npx` in your MCP client config.
 
-Example (cursor or Claude Desktop config snippet):
+Example (Cursor/Claude Desktop mcp.json snippet):
 
 ```json
 {
@@ -19,7 +19,7 @@ Example (cursor or Claude Desktop config snippet):
       "command": "npx",
       "args": [
         "-y",
-        "@mcp-server/codesandbox@latest",
+        "@techlibs/codesandbox-mcp@latest",
         "--read-only"
       ],
       "env": {
@@ -28,6 +28,14 @@ Example (cursor or Claude Desktop config snippet):
     }
   }
 }
+```
+
+CLI binary name: `mcp-server-codesandbox`
+
+You can also run directly:
+
+```sh
+npx -y @techlibs/codesandbox-mcp@latest --help
 ```
 
 Flags:
