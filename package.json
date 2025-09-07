@@ -1,7 +1,6 @@
 {
-  "name": "codesandbox-mcp",
+  "name": "@techlibs/codesandbox-mcp",
   "version": "0.1.0",
-  "private": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/cli.js",
